@@ -656,6 +656,12 @@ class PaydayBillApp:
             probe += timedelta(days=14)
         return paydays
 
+    def _first_payday_in_year(self, payday_date: date) -> date:
+        first = payday_date
+        while (first - timedelta(days=14)).year == payday_date.year:
+            first -= timedelta(days=14)
+        return first
+
     def _preview_session(self, payday_str: str) -> dict:
         existing = self.data.get("sessions", {}).get(payday_str)
         if existing:
@@ -669,17 +675,19 @@ class PaydayBillApp:
             return
 
         try:
-            start_date = self._parse_date(current_str)
+            selected_date = self._parse_date(current_str)
         except ValueError as exc:
             messagebox.showerror("Date error", str(exc))
             return
 
+        start_date = self._first_payday_in_year(selected_date)
         paydays = self._build_payday_sequence(start_date)
         templates = sorted(
             self.data.get("templates", []),
             key=lambda t: (0 if int(t.get("slot", 1)) == 2 else 1, t.get("name", "").lower()),
         )
         free_numbers = set(int(x) for x in self.data.get("free_check_numbers", DEFAULT_FREE_CHECK_NUMBERS))
+        preview_sessions = {self._fmt_date(payday): self._preview_session(self._fmt_date(payday)) for payday in paydays}
 
         window = ctk.CTkToplevel(self.root)
         window.title("Spreadsheet Simulation (Read Only)")
@@ -730,16 +738,25 @@ class PaydayBillApp:
             tk.Label(inner, text=tpl["name"], anchor="w", width=30, bg="#F2F2F2").grid(row=row_i, column=0, sticky="nsew")
             template_slot = int(tpl.get("slot", 1))
             for col_i, payday in enumerate(paydays, start=1):
+                payday_str = self._fmt_date(payday)
+                preview = preview_sessions[payday_str]
                 payday_number = self._payday_number_in_year(payday)
+                text_value = ""
                 if payday_number in free_numbers:
                     bg = green_bg
                 else:
                     slot = self._slot_for_date(payday)
                     if slot == template_slot:
                         bg = red_bg if template_slot == 1 else yellow_bg
+                        for bill in preview.get("bills", []):
+                            if bill.get("template_id") == tpl.get("id"):
+                                text_value = f"${Decimal(str(bill.get('amount', '0'))):.2f}"
+                                break
+                        if not text_value:
+                            text_value = f"${Decimal(str(tpl.get('default_amount', '0'))):.2f}"
                     else:
                         bg = neutral_bg
-                cell = tk.Label(inner, text="", bg=bg, width=10)
+                cell = tk.Label(inner, text=text_value, bg=bg, width=10)
                 cell.grid(row=row_i, column=col_i, sticky="nsew")
 
         legend_row = len(templates) + 1
@@ -762,7 +779,7 @@ class PaydayBillApp:
 
         for col_i, payday in enumerate(paydays, start=1):
             payday_str = self._fmt_date(payday)
-            preview = self._preview_session(payday_str)
+            preview = preview_sessions[payday_str]
 
             total_bills = Decimal("0")
             for bill in preview.get("bills", []):
