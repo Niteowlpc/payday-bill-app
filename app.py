@@ -16,6 +16,7 @@ import customtkinter as ctk
 
 DATA_FILE = Path(__file__).with_name("payday_data.json")
 DATE_FMT = "%m/%d/%Y"
+DEFAULT_FREE_CHECK_NUMBERS = [13, 24]
 
 
 @dataclass
@@ -32,7 +33,7 @@ class PaydayBillApp:
 
         self.root = ctk.CTk()
         self.root.title("Payday Bill App")
-        self.root.geometry("1220x760")
+        self.root.geometry("1260x780")
 
         self.data = self._load_data()
         self.bill_row_widgets: list[BillRowWidgets] = []
@@ -48,6 +49,8 @@ class PaydayBillApp:
             "current_date": None,
             "templates": [],
             "sessions": {},
+            "free_check_numbers": DEFAULT_FREE_CHECK_NUMBERS,
+            "free_check_flips": [],
         }
 
     def _load_data(self) -> dict:
@@ -55,7 +58,10 @@ class PaydayBillApp:
             try:
                 with DATA_FILE.open("r", encoding="utf-8") as f:
                     data = json.load(f)
-                return {**self._default_data(), **data}
+                merged = {**self._default_data(), **data}
+                if not merged.get("free_check_numbers"):
+                    merged["free_check_numbers"] = DEFAULT_FREE_CHECK_NUMBERS
+                return merged
             except (json.JSONDecodeError, OSError):
                 messagebox.showwarning(
                     "Data warning",
@@ -84,22 +90,83 @@ class PaydayBillApp:
         d = self._parse_date(payday_str)
         return self._fmt_date(d + timedelta(days=14))
 
-    def _cycle_slot(self, payday_str: str) -> int:
+    def _flip_dates(self) -> list[date]:
+        return sorted(self._parse_date(d) for d in self.data.get("free_check_flips", []))
+
+    def _base_slot_from_anchor(self, payday_date: date) -> int:
         anchor = self.data.get("anchor_date")
         if not anchor:
-            self.data["anchor_date"] = payday_str
+            self.data["anchor_date"] = self._fmt_date(payday_date)
             self._save_data()
             return 1
 
         anchor_date = self._parse_date(anchor)
-        payday_date = self._parse_date(payday_str)
         delta = (payday_date - anchor_date).days
-
         if delta % 14 != 0:
             raise ValueError("Payday must be exactly every 14 days from the anchor date.")
-
         index = delta // 14
         return 1 if index % 2 == 0 else 2
+
+    def _slot_for_date(self, payday_date: date, pending_flip_date: date | None = None) -> int:
+        base = self._base_slot_from_anchor(payday_date)
+        flip_count = sum(1 for d in self._flip_dates() if d < payday_date)
+        if pending_flip_date and pending_flip_date < payday_date:
+            flip_count += 1
+        if flip_count % 2 == 1:
+            return 2 if base == 1 else 1
+        return base
+
+    def _cycle_slot(self, payday_str: str) -> int:
+        payday_date = self._parse_date(payday_str)
+        return self._slot_for_date(payday_date)
+
+    def _payday_index(self, payday_date: date) -> int:
+        anchor = self.data.get("anchor_date")
+        if not anchor:
+            self.data["anchor_date"] = self._fmt_date(payday_date)
+            self._save_data()
+            return 1
+
+        anchor_date = self._parse_date(anchor)
+        delta = (payday_date - anchor_date).days
+        if delta % 14 != 0:
+            raise ValueError("Payday must be exactly every 14 days from the anchor date.")
+        return (delta // 14) + 1
+
+    def _payday_number_in_year(self, payday_date: date) -> int:
+        jan1 = date(payday_date.year, 1, 1)
+        anchor = self.data.get("anchor_date")
+        if not anchor:
+            self.data["anchor_date"] = self._fmt_date(payday_date)
+            self._save_data()
+            return 1
+
+        anchor_date = self._parse_date(anchor)
+        delta = (jan1 - anchor_date).days
+        if delta <= 0:
+            first = anchor_date
+            while first < jan1:
+                first += timedelta(days=14)
+        else:
+            steps = (delta + 13) // 14
+            first = anchor_date + timedelta(days=steps * 14)
+
+        if payday_date < first:
+            return 0
+        return ((payday_date - first).days // 14) + 1
+
+    def _next_free_check_date(self, from_date: date) -> tuple[date | None, int | None]:
+        targets = set(int(x) for x in self.data.get("free_check_numbers", DEFAULT_FREE_CHECK_NUMBERS))
+        if not targets:
+            return None, None
+
+        probe = from_date
+        for _ in range(60):
+            number = self._payday_number_in_year(probe)
+            if number in targets and probe >= from_date:
+                return probe, number
+            probe += timedelta(days=14)
+        return None, None
 
     def _templates_for_slot(self, slot: int) -> list[dict]:
         return [t for t in self.data["templates"] if t.get("active", True) and int(t["slot"]) == slot]
@@ -140,7 +207,7 @@ class PaydayBillApp:
 
         self.top_frame = ctk.CTkFrame(self.root)
         self.top_frame.grid(row=0, column=0, columnspan=2, sticky="ew", padx=14, pady=14)
-        self.top_frame.grid_columnconfigure(8, weight=1)
+        self.top_frame.grid_columnconfigure(10, weight=1)
 
         ctk.CTkLabel(self.top_frame, text="Payday Date (MM/DD/YYYY)").grid(row=0, column=0, padx=6, pady=8)
         self.payday_var = tk.StringVar()
@@ -161,11 +228,22 @@ class PaydayBillApp:
             row=0, column=5, padx=6, pady=8
         )
 
+        ctk.CTkButton(
+            self.top_frame,
+            text="Start Free Check Review",
+            fg_color="#2E7D32",
+            hover_color="#1B5E20",
+            command=self.start_free_check_review,
+        ).grid(row=0, column=6, padx=6, pady=8)
+
         self.next_payday_label = ctk.CTkLabel(self.top_frame, text="Next payday: --")
-        self.next_payday_label.grid(row=0, column=6, padx=6, pady=8)
+        self.next_payday_label.grid(row=0, column=7, padx=6, pady=8)
 
         self.slot_label = ctk.CTkLabel(self.top_frame, text="Slot: --")
-        self.slot_label.grid(row=0, column=7, padx=6, pady=8)
+        self.slot_label.grid(row=0, column=8, padx=6, pady=8)
+
+        self.next_free_check_label = ctk.CTkLabel(self.top_frame, text="Next free check: --")
+        self.next_free_check_label.grid(row=0, column=9, padx=6, pady=8)
 
         # Bills area
         self.left_frame = ctk.CTkFrame(self.root)
@@ -211,7 +289,7 @@ class PaydayBillApp:
         form.grid(row=2, column=0, sticky="ew", padx=10, pady=6)
         form.grid_columnconfigure(1, weight=1)
 
-        labels = ["Name", "Default Amount", "Slot (1/2)", "Notes", "URL"]
+        labels = ["Name", "Default Amount", "Paycheck Cycle (1/2)", "Notes", "URL"]
         for i, label in enumerate(labels):
             ctk.CTkLabel(form, text=label).grid(row=i, column=0, sticky="w", padx=8, pady=6)
 
@@ -248,7 +326,7 @@ class PaydayBillApp:
 
     # -------------------- Template management --------------------
     def _template_label(self, tpl: dict) -> str:
-        return f"{tpl['name']} (slot {tpl['slot']})"
+        return f"{tpl['name']} (cycle {tpl['slot']})"
 
     def _template_by_id(self, template_id: str) -> dict | None:
         for tpl in self.data["templates"]:
@@ -322,7 +400,7 @@ class PaydayBillApp:
 
         slot = self.tpl_slot_var.get().strip()
         if slot not in {"1", "2"}:
-            messagebox.showerror("Validation", "Slot must be 1 or 2.")
+            messagebox.showerror("Validation", "Cycle must be 1 or 2.")
             return
 
         url = self.tpl_url_var.get().strip()
@@ -382,6 +460,20 @@ class PaydayBillApp:
         self._save_data()
         self.recalculate_summary()
 
+    def _update_top_labels(self, payday_str: str, slot: int) -> None:
+        self.next_payday_label.configure(text=f"Next payday: {self._next_payday_str(payday_str)}")
+        payday_date = self._parse_date(payday_str)
+        payday_number = self._payday_number_in_year(payday_date)
+        self.slot_label.configure(text=f"Cycle: {slot} (payday #{payday_number} this year)")
+
+        next_free_date, next_free_number = self._next_free_check_date(payday_date)
+        if next_free_date and next_free_number:
+            self.next_free_check_label.configure(
+                text=f"Next free check: {self._fmt_date(next_free_date)} (#{next_free_number})"
+            )
+        else:
+            self.next_free_check_label.configure(text="Next free check: --")
+
     def load_payday(self) -> None:
         payday_str = self.payday_var.get().strip()
         try:
@@ -396,8 +488,7 @@ class PaydayBillApp:
         self._save_data()
 
         self.paycheck_var.set(self._money_str(session.get("paycheck_amount", "0.00")))
-        self.next_payday_label.configure(text=f"Next payday: {self._next_payday_str(payday_str)}")
-        self.slot_label.configure(text=f"Slot: {slot}")
+        self._update_top_labels(payday_str, slot)
 
         self._render_bills(session)
         self.recalculate_summary()
@@ -415,6 +506,107 @@ class PaydayBillApp:
         current = self.payday_var.get().strip()
         if current:
             self.load_payday()
+
+    def _clear_future_sessions(self, from_date: date) -> None:
+        to_delete = []
+        for payday_str in self.data["sessions"].keys():
+            payday_date = self._parse_date(payday_str)
+            if payday_date > from_date:
+                to_delete.append(payday_str)
+        for key in to_delete:
+            self.data["sessions"].pop(key, None)
+
+    def _find_next_due_for_template_after_flip(self, tpl: dict, current_date: date) -> str:
+        for i in range(1, 80):
+            probe = current_date + timedelta(days=14 * i)
+            slot = self._slot_for_date(probe, pending_flip_date=current_date)
+            if slot == int(tpl["slot"]):
+                return self._fmt_date(probe)
+        return "(not found)"
+
+    def start_free_check_review(self) -> None:
+        current_str = self.payday_var.get().strip()
+        if not current_str:
+            messagebox.showerror("Missing date", "Load a payday first.")
+            return
+
+        current_date = self._parse_date(current_str)
+        payday_number = self._payday_number_in_year(current_date)
+        free_numbers = [int(x) for x in self.data.get("free_check_numbers", DEFAULT_FREE_CHECK_NUMBERS)]
+
+        if payday_number not in free_numbers:
+            proceed = messagebox.askyesno(
+                "Not a configured free check",
+                f"This is payday #{payday_number} this year.\n"
+                f"Configured free checks are #{free_numbers}.\n\n"
+                "Do you still want to run Free Check Review?",
+            )
+            if not proceed:
+                return
+
+        if not self.data["templates"]:
+            messagebox.showinfo("No templates", "No bill templates are set up yet.")
+            return
+
+        summary_lines = [
+            f"Free Check Review for {current_str}",
+            "",
+            "For each bill:",
+            "Yes = wait until new flipped schedule",
+            "No = pay from this free check (and keep future schedule)",
+            "Cancel = stop review",
+            "",
+        ]
+
+        session = self._ensure_session(current_str)
+        pay_now_count = 0
+        wait_count = 0
+
+        existing_ids = {b.get("template_id") for b in session.get("bills", [])}
+
+        sorted_templates = sorted(self.data["templates"], key=lambda t: t.get("name", "").lower())
+        for tpl in sorted_templates:
+            next_due = self._find_next_due_for_template_after_flip(tpl, current_date)
+            choice = messagebox.askyesnocancel(
+                "Free Check Bill Review",
+                f"{tpl['name']} (cycle {tpl['slot']})\n\n"
+                f"Can this wait until {next_due}?\n\n"
+                "Yes = Wait\nNo = Pay now on free check\nCancel = stop",
+            )
+            if choice is None:
+                break
+
+            if choice is True:
+                wait_count += 1
+                summary_lines.append(f"WAIT: {tpl['name']} -> {next_due}")
+                continue
+
+            if tpl["id"] not in existing_ids:
+                session["bills"].append(
+                    {
+                        "template_id": tpl["id"],
+                        "name": tpl["name"],
+                        "amount": self._money_str(tpl["default_amount"]),
+                        "included": True,
+                        "notes": tpl.get("notes", ""),
+                        "url": tpl.get("url", ""),
+                        "slot": int(tpl["slot"]),
+                        "pushed_from": "Free Check Review",
+                    }
+                )
+                existing_ids.add(tpl["id"])
+            pay_now_count += 1
+            summary_lines.append(f"PAY NOW: {tpl['name']} (future stays on schedule)")
+
+        if current_str not in self.data.get("free_check_flips", []):
+            self.data.setdefault("free_check_flips", []).append(current_str)
+
+        self._clear_future_sessions(current_date)
+        self._save_data()
+        self.load_payday()
+
+        summary_lines.extend(["", f"Wait: {wait_count}", f"Pay now: {pay_now_count}", "", "Cycle flip applied for future paydays."])
+        messagebox.showinfo("Free Check Review Complete", "\n".join(summary_lines))
 
     # -------------------- Bill rendering --------------------
     def _clear_bill_rows(self) -> None:
@@ -450,7 +642,7 @@ class PaydayBillApp:
             pushed_from = bill.get("pushed_from")
             name = bill.get("name", "")
             if pushed_from:
-                name = f"{name} (Pushed from {pushed_from})"
+                name = f"{name} ({pushed_from})"
 
             ctk.CTkLabel(frame, text=name, anchor="w").grid(row=0, column=2, padx=6, pady=6, sticky="w")
 
@@ -462,9 +654,14 @@ class PaydayBillApp:
                 row=0, column=4, padx=6, pady=6
             )
 
-            ctk.CTkButton(frame, text="Push", width=70, fg_color="#7A4E0E", hover_color="#5D3B0A", command=lambda idx=i - 1: self.push_bill(idx)).grid(
-                row=0, column=5, padx=6, pady=6
-            )
+            ctk.CTkButton(
+                frame,
+                text="Push",
+                width=70,
+                fg_color="#7A4E0E",
+                hover_color="#5D3B0A",
+                command=lambda idx=i - 1: self.push_bill(idx),
+            ).grid(row=0, column=5, padx=6, pady=6)
 
             self.bill_row_widgets.append(BillRowWidgets(frame=frame, include_var=include_var, amount_var=amount_var))
 
@@ -564,7 +761,7 @@ class PaydayBillApp:
 
         bill = session["bills"].pop(bill_index)
         bill["included"] = True
-        bill["pushed_from"] = current_str
+        bill["pushed_from"] = f"Pushed from {current_str}"
 
         if choice is True:
             to_move = [copy.deepcopy(b) for b in next_session.get("bills", [])]
