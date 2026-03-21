@@ -656,6 +656,12 @@ class PaydayBillApp:
             probe += timedelta(days=14)
         return paydays
 
+    def _preview_session(self, payday_str: str) -> dict:
+        existing = self.data.get("sessions", {}).get(payday_str)
+        if existing:
+            return existing
+        return self._new_session_for_date(payday_str)
+
     def show_spreadsheet_view(self) -> None:
         current_str = self.payday_var.get().strip()
         if not current_str:
@@ -736,8 +742,8 @@ class PaydayBillApp:
                 cell = tk.Label(inner, text="", bg=bg, width=10)
                 cell.grid(row=row_i, column=col_i, sticky="nsew")
 
-        total_row = len(templates) + 1
-        tk.Label(inner, text="Legend", anchor="w", width=30, bg="#D9E1F2").grid(row=total_row, column=0, sticky="nsew")
+        legend_row = len(templates) + 1
+        tk.Label(inner, text="Legend", anchor="w", width=30, bg="#D9E1F2").grid(row=legend_row, column=0, sticky="nsew")
         legend_items = [
             ("Cycle 1 due", red_bg),
             ("Cycle 2 due", yellow_bg),
@@ -746,9 +752,43 @@ class PaydayBillApp:
         ]
         for idx, (text, color) in enumerate(legend_items, start=1):
             lbl = tk.Label(inner, text=text, bg=color, width=10)
-            lbl.grid(row=total_row, column=idx, sticky="nsew")
+            lbl.grid(row=legend_row, column=idx, sticky="nsew")
 
-        for r in range(total_row + 1):
+        total_bills_row = legend_row + 1
+        money_left_row = legend_row + 2
+
+        tk.Label(inner, text="Total Bills", anchor="w", width=30, bg="#F2F2F2").grid(row=total_bills_row, column=0, sticky="nsew")
+        tk.Label(inner, text="Money Left", anchor="w", width=30, bg="#F2F2F2").grid(row=money_left_row, column=0, sticky="nsew")
+
+        for col_i, payday in enumerate(paydays, start=1):
+            payday_str = self._fmt_date(payday)
+            preview = self._preview_session(payday_str)
+
+            total_bills = Decimal("0")
+            for bill in preview.get("bills", []):
+                if not bill.get("included", True):
+                    continue
+                try:
+                    total_bills += self._parse_money(str(bill.get("amount", "0")))
+                except (InvalidOperation, ValueError):
+                    pass
+
+            try:
+                paycheck = self._parse_money(str(preview.get("paycheck_amount", "0")))
+            except (InvalidOperation, ValueError):
+                paycheck = Decimal("0")
+
+            leftover = paycheck - total_bills
+            leftover_bg = "#C6EFCE" if leftover >= 0 else "#FFC7CE"
+
+            tk.Label(inner, text=f"${total_bills:.2f}", bg="#F2F2F2", anchor="e").grid(
+                row=total_bills_row, column=col_i, sticky="nsew"
+            )
+            tk.Label(inner, text=f"${leftover:.2f}", bg=leftover_bg, anchor="e").grid(
+                row=money_left_row, column=col_i, sticky="nsew"
+            )
+
+        for r in range(money_left_row + 1):
             inner.grid_rowconfigure(r, minsize=row_h)
         inner.grid_columnconfigure(0, minsize=name_col_w)
         for c in range(1, len(paydays) + 1):

@@ -1,6 +1,6 @@
 {
   "anchor_date": "04/01/2026",
-  "current_date": "01/07/2026",
+  "current_date": "03/18/2026",
   "templates": [
     {
       "name": "Shellpoint Mortgage 1 of 2",
@@ -40,7 +40,7 @@
     },
     {
       "name": "Car Payment 1 of 2",
-      "default_amount": "343.08",
+      "default_amount": "282.00",
       "slot": 1,
       "notes": "First half of the car payment",
       "url": "",
@@ -121,7 +121,7 @@
     },
     {
       "name": "Car Payment 2 of 2",
-      "default_amount": "343.08",
+      "default_amount": "282.00",
       "slot": 2,
       "notes": "Pay this bill now",
       "url": "https://internet.speedpay.com/suncoastcreditunion/#/login/profile",
@@ -290,6 +290,411 @@
       ]
     },
     "03/18/2026": {
+      "paycheck_amount": "2103.24",
+      "bills": [
+        {
+          "template_id": "a19aca59-0a7c-4d74-99a8-e2ce925ba209",
+          "name": "Lakeview Mortgage 2 of 2",
+          "amount": "861.34",
+          "included": true,
+          "notes": "The full paymentshould be in the bills now, so go pay the mortgage.",
+          "url": "https://account.mylakeviewloan.com/576f02ea-3b46-4308-a059-04a056bc2fed/oauth2/v2.0/authorize?p=B2C_1A_SignUpOrSignIn&client_id=5c449c7d-0ac4-4454-8f55-782247926121&nonce=defaultNonce&redirect_uri=https://www.mylakeviewloan.com/sessions/login&scope=openid&response_type=id_token&response_mode=form_post&pageName=&guid=97163485-6d91-4dc7-a738-287910984123&ga_client_id=&session_id=a466360e2893f21ccbd1c20bc31fb28a&&getCustomer=no&state=%7b%22redirect%22:null%7d&x-client-SKU=apollo-accounts-lak-prod",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "0a967d7e-8447-45de-a28e-103304a1260b",
+          "name": "Shellpoint Mortgage 2 of 2",
+          "amount": "43.53",
+          "included": true,
+          "notes": "Pay this bill now",
+          "url": "https://signin.shellpointmtg.com/signin/myaccount",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "43bf195f-6907-47b3-a758-016f34975969",
+          "name": "Water bill",
+          "amount": "136.81",
+          "included": true,
+          "notes": "",
+          "url": "https://identity.tylerportico.com/oauth2/default/v1/authorize?client_id=tylerportico-insite-mop&redirect_uri=https%3A%2F%2Fpinellasparkfl.municipalonlinepayments.com%2Fsignin-oidc-tidc&response_type=code%20id_token%20token&scope=openid%20profile%20email%20tcpPortal_pinellasparkfl&state=OpenIdConnect.AuthenticationProperties%3DrEgtE9PGWpDnT_ZojN0DnFN6YncAacj-xrghSG0azIf0wKSxC8Kvm3cYdZsa-EcLC6PinAgaU5S8UPq6Eseh1vrCNk42bioj8aSXYkTOMEIXMvjlA_JxjAQjiJRhs3UMnuVaYY1bM_icsmp_D_YevIKJcnzd4vIVlQD4FXzNl741Nc9LdLohXvrJsfp0RyVfwk89zlIss-TxLkV56d2yqWURnJkh1QmcvO9Fi4tlsLXn93QrhtmQQPfq825Js1AtRT_LrivK_qckKCif890yqJcaNHPCI7fk6kWJu1cowri7pkRKtWgxfTDWQwgytaRuWX5Qqnagwuots-_Wa-OQevyHVDM&response_mode=form_post&nonce=639022168544094523.ZWZjN2FhM2MtYWIxYS00ZGM4LWI4MjQtM2RlMzQyYTBmMDA3NmVhMWI1ZTctNzUwOS00OWI2LWE3ZGYtZTViZTFiMjkzMzg4&site=pinellasparkfl&x-client-SKU=ID_NET461&x-client-ver=5.5.0.0",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "f3bccac6-6afa-4919-b2bf-0551c3086682",
+          "name": "World of Warcaft",
+          "amount": "30.00",
+          "included": true,
+          "notes": "This is auto paid",
+          "url": "",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "35dfec44-5dae-4156-b8b5-575eb7832e17",
+          "name": "Frontier Fios",
+          "amount": "111.83",
+          "included": true,
+          "notes": "",
+          "url": "https://frontier.com/pages/login",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "a42a89d8-a3e8-4629-a9ec-f38725f8d43c",
+          "name": "AT&T",
+          "amount": "238.32",
+          "included": true,
+          "notes": "",
+          "url": "https://signin.att.com/dynamic/iamLRR/LrrController?IAM_OP=login&appName=m14186&loginSuccessURL=https:%2F%2Foidc.idp.clogin.att.com%2Fmga%2Fsps%2Foauth%2Foauth20%2Fauthorize%3Fresponse_type%3Did_token%26client_id%3Dm14186%26redirect_uri%3Dhttps%253A%252F%252Fwww.att.com%252Fmsapi%252Flogin%252Funauth%252Fservice%252Fv1%252Fhaloc%252Foidc%252Fredirect%26state%3Dfrom%253Dnx%26scope%3Dopenid%26response_mode%3Dform_post%26nonce%3D56dn6yHl",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "fc67df31-12e5-429f-ae10-62e9763e2620",
+          "name": "Car Payment 2 of 2",
+          "amount": "281.90",
+          "included": true,
+          "notes": "Pay this bill now",
+          "url": "https://internet.speedpay.com/suncoastcreditunion/#/login/profile",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "b7ace4f9-615f-4c37-a94e-c407e9bc26a0",
+          "name": "Citibank Card",
+          "amount": "100.00",
+          "included": true,
+          "notes": "",
+          "url": "https://www.citi.com/?loginScreenId=inactivityHomePage",
+          "slot": 2,
+          "pushed_from": null
+        }
+      ]
+    },
+    "01/21/2026": {
+      "paycheck_amount": "2116.32",
+      "bills": [
+        {
+          "template_id": "a19aca59-0a7c-4d74-99a8-e2ce925ba209",
+          "name": "Lakeview Mortgage 2 of 2",
+          "amount": "854.36",
+          "included": true,
+          "notes": "The full paymentshould be in the bills now, so go pay the mortgage.",
+          "url": "https://account.mylakeviewloan.com/576f02ea-3b46-4308-a059-04a056bc2fed/oauth2/v2.0/authorize?p=B2C_1A_SignUpOrSignIn&client_id=5c449c7d-0ac4-4454-8f55-782247926121&nonce=defaultNonce&redirect_uri=https://www.mylakeviewloan.com/sessions/login&scope=openid&response_type=id_token&response_mode=form_post&pageName=&guid=97163485-6d91-4dc7-a738-287910984123&ga_client_id=&session_id=a466360e2893f21ccbd1c20bc31fb28a&&getCustomer=no&state=%7b%22redirect%22:null%7d&x-client-SKU=apollo-accounts-lak-prod",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "0a967d7e-8447-45de-a28e-103304a1260b",
+          "name": "Shellpoint Mortgage 2 of 2",
+          "amount": "43.53",
+          "included": true,
+          "notes": "Pay this bill now",
+          "url": "https://signin.shellpointmtg.com/signin/myaccount",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "43bf195f-6907-47b3-a758-016f34975969",
+          "name": "Water bill",
+          "amount": "192.73",
+          "included": true,
+          "notes": "",
+          "url": "https://identity.tylerportico.com/oauth2/default/v1/authorize?client_id=tylerportico-insite-mop&redirect_uri=https%3A%2F%2Fpinellasparkfl.municipalonlinepayments.com%2Fsignin-oidc-tidc&response_type=code%20id_token%20token&scope=openid%20profile%20email%20tcpPortal_pinellasparkfl&state=OpenIdConnect.AuthenticationProperties%3DrEgtE9PGWpDnT_ZojN0DnFN6YncAacj-xrghSG0azIf0wKSxC8Kvm3cYdZsa-EcLC6PinAgaU5S8UPq6Eseh1vrCNk42bioj8aSXYkTOMEIXMvjlA_JxjAQjiJRhs3UMnuVaYY1bM_icsmp_D_YevIKJcnzd4vIVlQD4FXzNl741Nc9LdLohXvrJsfp0RyVfwk89zlIss-TxLkV56d2yqWURnJkh1QmcvO9Fi4tlsLXn93QrhtmQQPfq825Js1AtRT_LrivK_qckKCif890yqJcaNHPCI7fk6kWJu1cowri7pkRKtWgxfTDWQwgytaRuWX5Qqnagwuots-_Wa-OQevyHVDM&response_mode=form_post&nonce=639022168544094523.ZWZjN2FhM2MtYWIxYS00ZGM4LWI4MjQtM2RlMzQyYTBmMDA3NmVhMWI1ZTctNzUwOS00OWI2LWE3ZGYtZTViZTFiMjkzMzg4&site=pinellasparkfl&x-client-SKU=ID_NET461&x-client-ver=5.5.0.0",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "f3bccac6-6afa-4919-b2bf-0551c3086682",
+          "name": "World of Warcaft",
+          "amount": "30.00",
+          "included": true,
+          "notes": "This is auto paid",
+          "url": "",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "35dfec44-5dae-4156-b8b5-575eb7832e17",
+          "name": "Frontier Fios",
+          "amount": "109.69",
+          "included": true,
+          "notes": "",
+          "url": "https://frontier.com/pages/login",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "a42a89d8-a3e8-4629-a9ec-f38725f8d43c",
+          "name": "T-Mobile",
+          "amount": "236.04",
+          "included": true,
+          "notes": "",
+          "url": "https://signin.att.com/dynamic/iamLRR/LrrController?IAM_OP=login&appName=m14186&loginSuccessURL=https:%2F%2Foidc.idp.clogin.att.com%2Fmga%2Fsps%2Foauth%2Foauth20%2Fauthorize%3Fresponse_type%3Did_token%26client_id%3Dm14186%26redirect_uri%3Dhttps%253A%252F%252Fwww.att.com%252Fmsapi%252Flogin%252Funauth%252Fservice%252Fv1%252Fhaloc%252Foidc%252Fredirect%26state%3Dfrom%253Dnx%26scope%3Dopenid%26response_mode%3Dform_post%26nonce%3D56dn6yHl",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "fc67df31-12e5-429f-ae10-62e9763e2620",
+          "name": "Car Payment 2 of 2",
+          "amount": "343.10",
+          "included": true,
+          "notes": "Pay this bill now",
+          "url": "https://internet.speedpay.com/suncoastcreditunion/#/login/profile",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "b7ace4f9-615f-4c37-a94e-c407e9bc26a0",
+          "name": "Citibank Card",
+          "amount": "100.00",
+          "included": true,
+          "notes": "",
+          "url": "https://www.citi.com/?loginScreenId=inactivityHomePage",
+          "slot": 2,
+          "pushed_from": null
+        }
+      ]
+    },
+    "02/04/2026": {
+      "paycheck_amount": "2102.37",
+      "bills": [
+        {
+          "template_id": "8ca94529-0ae5-4968-82a4-48cc44d241b0",
+          "name": "Shellpoint Mortgage 1 of 2",
+          "amount": "43.53",
+          "included": true,
+          "notes": "First half of mortgage payment",
+          "url": "",
+          "slot": 1,
+          "pushed_from": null
+        },
+        {
+          "template_id": "2ebc388f-06d8-459c-ae7f-f0d5ea5e27d6",
+          "name": "Lakeview Mortgage 1 of 2",
+          "amount": "854.36",
+          "included": true,
+          "notes": "First half of mortgage payment",
+          "url": "",
+          "slot": 1,
+          "pushed_from": null
+        },
+        {
+          "template_id": "c5580758-4db3-4ce1-8e9e-fb9f957d1993",
+          "name": "Progressive",
+          "amount": "260.00",
+          "included": true,
+          "notes": "Put this into the savings account",
+          "url": "",
+          "slot": 1,
+          "pushed_from": null
+        },
+        {
+          "template_id": "fe7fe416-706c-48d1-a7e0-411920043404",
+          "name": "Duke Energy",
+          "amount": "101.03",
+          "included": true,
+          "notes": "",
+          "url": "https://login.duke-energy.com/u/login/identifier?state=hKFo2SB6eUVzRzBtNDVGM2dUS01SSzhPRTR2c3NyOHFGZjM4b6Fur3VuaXZlcnNhbC1sb2dpbqN0aWTZIGt1RVhLNVE0amVNb1dpcXJqZXdoemZTMzRNSVBmNWt2o2NpZNkgS1c3ZTdhRnlpamM5U01TVnluZGFpNW9ucm1KQlBjMEI",
+          "slot": 1,
+          "pushed_from": null
+        },
+        {
+          "template_id": "3d9d1221-f4db-4d0f-8484-f0104dbb9f5d",
+          "name": "Car Payment 1 of 2",
+          "amount": "282.00",
+          "included": true,
+          "notes": "First half of the car payment",
+          "url": "",
+          "slot": 1,
+          "pushed_from": null
+        },
+        {
+          "template_id": "514be3db-7aad-4355-987d-67ede699040d",
+          "name": "GoodLeap",
+          "amount": "145.65",
+          "included": true,
+          "notes": "Christopher adds 278.00 to this payment, while he is still here",
+          "url": "https://www.billerpayments.com/app/cust/login.do?bsn=goodleapmain",
+          "slot": 1,
+          "pushed_from": null
+        },
+        {
+          "template_id": "d1592b25-6aa6-42d1-926e-a9bf2c7cdaae",
+          "name": "Synchrony - Duct work",
+          "amount": "100.59",
+          "included": true,
+          "notes": "Tania pays 77.00 to this bill",
+          "url": "https://www.synchrony.com/quickaccess/signin/paylater?token=eyJraWQiOiIyMTZiMTQzMC1mOTc2LTQ1NTktYjRhZi0yMzc3OWExODdjM2YiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIyMXQ0TUhscG5tSDh4SDhhMmdGMk5peDgxdjRpTW9ieCIsImludGVyYWN0aW9uSWQiOiJhNjZkYzY2Yy1jMTExLTRlMGEtYmVhNi05NzZhMWYyZDVhMGQiLCJyZXR1cm5UbyI6Imh0dHBzOlwvXC93d3cuc3luY2hyb255LmNvbVwvcXVpY2thY2Nlc3NcLyIsImlzcyI6ImF1dGguc3lmLmNvbSIsImV4cCI6MTc2NjYyMDY2NywiaWF0IjoxNzY2NjIwNjM3LCJqdGkiOiJiZDZlMzUwMi04MmM5LTQyOTktOWFlYi00YjQ4NzNhZjZjN2EifQ.IsmgJZLkwo2wCJ3yLhP2gFMv-hinsu22pkZsqps7z5TPQvbYmtmF833afXWEgP-wiZzLhzCjxDFg1mupiT1RqoTWOKWxKqnFwFy19_vIEdE967GSsBNxLj-WdKEmJFIxVGm8R3CUDCUeDtrKscVbzJrGHSRQpugeZ8lbChmICwx0rxz1z81tLnj1GR7heJk48egKbnSNMkZ9firZ23RPyWkIrzAiwh4ImwjCUMOVkaGdenrB-D1lpDESEBC8EiI7Dz5DQFvQxIKSKVWeSf_Olkk28Q-Zc46DIdTECI49gSXrxb159NKqHBkzJZkQiRzZx3ScrUX-PIaKXsNyvZlZWw&ui_locales=en",
+          "slot": 1,
+          "pushed_from": null
+        }
+      ]
+    },
+    "02/18/2026": {
+      "paycheck_amount": "2091.09",
+      "bills": [
+        {
+          "template_id": "a19aca59-0a7c-4d74-99a8-e2ce925ba209",
+          "name": "Lakeview Mortgage 2 of 2",
+          "amount": "861.34",
+          "included": true,
+          "notes": "The full paymentshould be in the bills now, so go pay the mortgage.",
+          "url": "https://account.mylakeviewloan.com/576f02ea-3b46-4308-a059-04a056bc2fed/oauth2/v2.0/authorize?p=B2C_1A_SignUpOrSignIn&client_id=5c449c7d-0ac4-4454-8f55-782247926121&nonce=defaultNonce&redirect_uri=https://www.mylakeviewloan.com/sessions/login&scope=openid&response_type=id_token&response_mode=form_post&pageName=&guid=97163485-6d91-4dc7-a738-287910984123&ga_client_id=&session_id=a466360e2893f21ccbd1c20bc31fb28a&&getCustomer=no&state=%7b%22redirect%22:null%7d&x-client-SKU=apollo-accounts-lak-prod",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "0a967d7e-8447-45de-a28e-103304a1260b",
+          "name": "Shellpoint Mortgage 2 of 2",
+          "amount": "43.53",
+          "included": true,
+          "notes": "Pay this bill now",
+          "url": "https://signin.shellpointmtg.com/signin/myaccount",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "43bf195f-6907-47b3-a758-016f34975969",
+          "name": "Water bill",
+          "amount": "139.04",
+          "included": true,
+          "notes": "",
+          "url": "https://identity.tylerportico.com/oauth2/default/v1/authorize?client_id=tylerportico-insite-mop&redirect_uri=https%3A%2F%2Fpinellasparkfl.municipalonlinepayments.com%2Fsignin-oidc-tidc&response_type=code%20id_token%20token&scope=openid%20profile%20email%20tcpPortal_pinellasparkfl&state=OpenIdConnect.AuthenticationProperties%3DrEgtE9PGWpDnT_ZojN0DnFN6YncAacj-xrghSG0azIf0wKSxC8Kvm3cYdZsa-EcLC6PinAgaU5S8UPq6Eseh1vrCNk42bioj8aSXYkTOMEIXMvjlA_JxjAQjiJRhs3UMnuVaYY1bM_icsmp_D_YevIKJcnzd4vIVlQD4FXzNl741Nc9LdLohXvrJsfp0RyVfwk89zlIss-TxLkV56d2yqWURnJkh1QmcvO9Fi4tlsLXn93QrhtmQQPfq825Js1AtRT_LrivK_qckKCif890yqJcaNHPCI7fk6kWJu1cowri7pkRKtWgxfTDWQwgytaRuWX5Qqnagwuots-_Wa-OQevyHVDM&response_mode=form_post&nonce=639022168544094523.ZWZjN2FhM2MtYWIxYS00ZGM4LWI4MjQtM2RlMzQyYTBmMDA3NmVhMWI1ZTctNzUwOS00OWI2LWE3ZGYtZTViZTFiMjkzMzg4&site=pinellasparkfl&x-client-SKU=ID_NET461&x-client-ver=5.5.0.0",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "f3bccac6-6afa-4919-b2bf-0551c3086682",
+          "name": "World of Warcaft",
+          "amount": "30.00",
+          "included": true,
+          "notes": "This is auto paid",
+          "url": "",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "35dfec44-5dae-4156-b8b5-575eb7832e17",
+          "name": "Frontier Fios",
+          "amount": "111.83",
+          "included": true,
+          "notes": "",
+          "url": "https://frontier.com/pages/login",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "a42a89d8-a3e8-4629-a9ec-f38725f8d43c",
+          "name": "T-Mobile",
+          "amount": "238.32",
+          "included": true,
+          "notes": "",
+          "url": "https://signin.att.com/dynamic/iamLRR/LrrController?IAM_OP=login&appName=m14186&loginSuccessURL=https:%2F%2Foidc.idp.clogin.att.com%2Fmga%2Fsps%2Foauth%2Foauth20%2Fauthorize%3Fresponse_type%3Did_token%26client_id%3Dm14186%26redirect_uri%3Dhttps%253A%252F%252Fwww.att.com%252Fmsapi%252Flogin%252Funauth%252Fservice%252Fv1%252Fhaloc%252Foidc%252Fredirect%26state%3Dfrom%253Dnx%26scope%3Dopenid%26response_mode%3Dform_post%26nonce%3D56dn6yHl",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "fc67df31-12e5-429f-ae10-62e9763e2620",
+          "name": "Car Payment 2 of 2",
+          "amount": "281.90",
+          "included": true,
+          "notes": "Pay this bill now",
+          "url": "https://internet.speedpay.com/suncoastcreditunion/#/login/profile",
+          "slot": 2,
+          "pushed_from": null
+        },
+        {
+          "template_id": "b7ace4f9-615f-4c37-a94e-c407e9bc26a0",
+          "name": "Citibank Card",
+          "amount": "100.00",
+          "included": true,
+          "notes": "",
+          "url": "https://www.citi.com/?loginScreenId=inactivityHomePage",
+          "slot": 2,
+          "pushed_from": null
+        }
+      ]
+    },
+    "03/04/2026": {
+      "paycheck_amount": "2100.43",
+      "bills": [
+        {
+          "template_id": "8ca94529-0ae5-4968-82a4-48cc44d241b0",
+          "name": "Shellpoint Mortgage 1 of 2",
+          "amount": "43.53",
+          "included": true,
+          "notes": "First half of mortgage payment",
+          "url": "",
+          "slot": 1,
+          "pushed_from": null
+        },
+        {
+          "template_id": "2ebc388f-06d8-459c-ae7f-f0d5ea5e27d6",
+          "name": "Lakeview Mortgage 1 of 2",
+          "amount": "861.34",
+          "included": true,
+          "notes": "First half of mortgage payment",
+          "url": "",
+          "slot": 1,
+          "pushed_from": null
+        },
+        {
+          "template_id": "c5580758-4db3-4ce1-8e9e-fb9f957d1993",
+          "name": "Progressive",
+          "amount": "260.00",
+          "included": true,
+          "notes": "Put this into the savings account",
+          "url": "",
+          "slot": 1,
+          "pushed_from": null
+        },
+        {
+          "template_id": "fe7fe416-706c-48d1-a7e0-411920043404",
+          "name": "Duke Energy",
+          "amount": "49.45",
+          "included": true,
+          "notes": "",
+          "url": "https://login.duke-energy.com/u/login/identifier?state=hKFo2SB6eUVzRzBtNDVGM2dUS01SSzhPRTR2c3NyOHFGZjM4b6Fur3VuaXZlcnNhbC1sb2dpbqN0aWTZIGt1RVhLNVE0amVNb1dpcXJqZXdoemZTMzRNSVBmNWt2o2NpZNkgS1c3ZTdhRnlpamM5U01TVnluZGFpNW9ucm1KQlBjMEI",
+          "slot": 1,
+          "pushed_from": null
+        },
+        {
+          "template_id": "3d9d1221-f4db-4d0f-8484-f0104dbb9f5d",
+          "name": "Car Payment 1 of 2",
+          "amount": "281.90",
+          "included": true,
+          "notes": "First half of the car payment",
+          "url": "",
+          "slot": 1,
+          "pushed_from": null
+        },
+        {
+          "template_id": "514be3db-7aad-4355-987d-67ede699040d",
+          "name": "GoodLeap",
+          "amount": "145.00",
+          "included": true,
+          "notes": "Christopher adds 278.00 to this payment, while he is still here",
+          "url": "https://www.billerpayments.com/app/cust/login.do?bsn=goodleapmain",
+          "slot": 1,
+          "pushed_from": null
+        },
+        {
+          "template_id": "d1592b25-6aa6-42d1-926e-a9bf2c7cdaae",
+          "name": "Synchrony - Duct work",
+          "amount": "100.59",
+          "included": true,
+          "notes": "Tania pays 77.00 to this bill",
+          "url": "https://www.synchrony.com/quickaccess/signin/paylater?token=eyJraWQiOiIyMTZiMTQzMC1mOTc2LTQ1NTktYjRhZi0yMzc3OWExODdjM2YiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIyMXQ0TUhscG5tSDh4SDhhMmdGMk5peDgxdjRpTW9ieCIsImludGVyYWN0aW9uSWQiOiJhNjZkYzY2Yy1jMTExLTRlMGEtYmVhNi05NzZhMWYyZDVhMGQiLCJyZXR1cm5UbyI6Imh0dHBzOlwvXC93d3cuc3luY2hyb255LmNvbVwvcXVpY2thY2Nlc3NcLyIsImlzcyI6ImF1dGguc3lmLmNvbSIsImV4cCI6MTc2NjYyMDY2NywiaWF0IjoxNzY2NjIwNjM3LCJqdGkiOiJiZDZlMzUwMi04MmM5LTQyOTktOWFlYi00YjQ4NzNhZjZjN2EifQ.IsmgJZLkwo2wCJ3yLhP2gFMv-hinsu22pkZsqps7z5TPQvbYmtmF833afXWEgP-wiZzLhzCjxDFg1mupiT1RqoTWOKWxKqnFwFy19_vIEdE967GSsBNxLj-WdKEmJFIxVGm8R3CUDCUeDtrKscVbzJrGHSRQpugeZ8lbChmICwx0rxz1z81tLnj1GR7heJk48egKbnSNMkZ9firZ23RPyWkIrzAiwh4ImwjCUMOVkaGdenrB-D1lpDESEBC8EiI7Dz5DQFvQxIKSKVWeSf_Olkk28Q-Zc46DIdTECI49gSXrxb159NKqHBkzJZkQiRzZx3ScrUX-PIaKXsNyvZlZWw&ui_locales=en",
+          "slot": 1,
+          "pushed_from": null
+        }
+      ]
+    },
+    "04/15/2026": {
       "paycheck_amount": "0.00",
       "bills": [
         {
@@ -335,7 +740,7 @@
         {
           "template_id": "35dfec44-5dae-4156-b8b5-575eb7832e17",
           "name": "Frontier Fios",
-          "amount": "0.00",
+          "amount": "111.83",
           "included": true,
           "notes": "",
           "url": "https://frontier.com/pages/login",
@@ -344,8 +749,8 @@
         },
         {
           "template_id": "a42a89d8-a3e8-4629-a9ec-f38725f8d43c",
-          "name": "AT&T",
-          "amount": "0.00",
+          "name": "T-Mobile",
+          "amount": "238.32",
           "included": true,
           "notes": "",
           "url": "https://signin.att.com/dynamic/iamLRR/LrrController?IAM_OP=login&appName=m14186&loginSuccessURL=https:%2F%2Foidc.idp.clogin.att.com%2Fmga%2Fsps%2Foauth%2Foauth20%2Fauthorize%3Fresponse_type%3Did_token%26client_id%3Dm14186%26redirect_uri%3Dhttps%253A%252F%252Fwww.att.com%252Fmsapi%252Flogin%252Funauth%252Fservice%252Fv1%252Fhaloc%252Foidc%252Fredirect%26state%3Dfrom%253Dnx%26scope%3Dopenid%26response_mode%3Dform_post%26nonce%3D56dn6yHl",
@@ -355,7 +760,7 @@
         {
           "template_id": "fc67df31-12e5-429f-ae10-62e9763e2620",
           "name": "Car Payment 2 of 2",
-          "amount": "343.08",
+          "amount": "282.00",
           "included": true,
           "notes": "Pay this bill now",
           "url": "https://internet.speedpay.com/suncoastcreditunion/#/login/profile",
