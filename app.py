@@ -621,7 +621,10 @@ class PaydayBillApp:
             return
 
         paydays = self._build_payday_sequence(start_date)
-        templates = sorted(self.data.get("templates", []), key=lambda t: t.get("name", "").lower())
+        templates = sorted(
+            self.data.get("templates", []),
+            key=lambda t: (0 if int(t.get("slot", 1)) == 2 else 1, t.get("name", "").lower()),
+        )
         free_numbers = set(int(x) for x in self.data.get("free_check_numbers", DEFAULT_FREE_CHECK_NUMBERS))
 
         window = ctk.CTkToplevel(self.root)
