@@ -38,6 +38,7 @@ class PaydayBillApp:
         self.data = self._load_data()
         self.bill_row_widgets: list[BillRowWidgets] = []
         self.selected_template_id: str | None = None
+        self.quick_payday_buttons: list[ctk.CTkButton] = []
 
         self._build_ui()
         self._load_initial_state()
@@ -309,6 +310,25 @@ class PaydayBillApp:
             row=0, column=2, padx=4, pady=4, sticky="ew"
         )
 
+        self.quick_nav_frame = ctk.CTkFrame(self.right_frame)
+        self.quick_nav_frame.grid(row=4, column=0, sticky="ew", padx=10, pady=(8, 10))
+        self.quick_nav_frame.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
+        ctk.CTkLabel(
+            self.quick_nav_frame,
+            text="Quick Payday Jump",
+            font=ctk.CTkFont(weight="bold"),
+        ).grid(row=0, column=0, columnspan=5, sticky="w", padx=4, pady=(4, 6))
+
+        for i in range(5):
+            btn = ctk.CTkButton(
+                self.quick_nav_frame,
+                text="--",
+                command=lambda idx=i: self._quick_jump_by_index(idx),
+                height=30,
+            )
+            btn.grid(row=1, column=i, padx=4, pady=4, sticky="ew")
+            self.quick_payday_buttons.append(btn)
+
     def _load_initial_state(self) -> None:
         self._refresh_template_menu()
         initial_date = self.data.get("current_date") or self.data.get("anchor_date")
@@ -466,6 +486,33 @@ class PaydayBillApp:
         else:
             self.next_free_check_label.configure(text="Next free check: --")
 
+    def _quick_jump_by_index(self, idx: int) -> None:
+        if idx < 0 or idx >= len(self.quick_payday_buttons):
+            return
+        target = self.quick_payday_buttons[idx].cget("text")
+        if target and target != "--":
+            self.payday_var.set(target)
+            self.load_payday()
+
+    def _refresh_quick_payday_buttons(self, payday_str: str) -> None:
+        try:
+            center_date = self._parse_date(payday_str)
+        except ValueError:
+            for button in self.quick_payday_buttons:
+                button.configure(text="--")
+            return
+
+        offsets = [-2, -1, 0, 1, 2]
+        for i, offset in enumerate(offsets):
+            target_date = center_date + timedelta(days=14 * offset)
+            label = self._fmt_date(target_date)
+            button = self.quick_payday_buttons[i]
+            button.configure(text=label)
+            if offset == 0:
+                button.configure(fg_color="#2E7D32", hover_color="#1B5E20")
+            else:
+                button.configure(fg_color="#1F6AA5", hover_color="#144870")
+
     def load_payday(self) -> None:
         payday_str = self.payday_var.get().strip()
         try:
@@ -481,6 +528,7 @@ class PaydayBillApp:
 
         self.paycheck_var.set(self._money_str(session.get("paycheck_amount", "0.00")))
         self._update_top_labels(payday_str, slot)
+        self._refresh_quick_payday_buttons(payday_str)
 
         self._render_bills(session)
         self.recalculate_summary()

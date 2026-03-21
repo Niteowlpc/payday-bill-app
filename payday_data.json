@@ -1,6 +1,6 @@
 {
   "anchor_date": "04/01/2026",
-  "current_date": "03/18/2026",
+  "current_date": "01/07/2026",
   "templates": [
     {
       "name": "Shellpoint Mortgage 1 of 2",
@@ -103,7 +103,7 @@
     },
     {
       "name": "Frontier Fios",
-      "default_amount": "0.00",
+      "default_amount": "111.83",
       "slot": 2,
       "notes": "",
       "url": "https://frontier.com/pages/login",
@@ -111,8 +111,8 @@
       "id": "35dfec44-5dae-4156-b8b5-575eb7832e17"
     },
     {
-      "name": "AT&T",
-      "default_amount": "0.00",
+      "name": "T-Mobile",
+      "default_amount": "238.32",
       "slot": 2,
       "notes": "",
       "url": "https://signin.att.com/dynamic/iamLRR/LrrController?IAM_OP=login&appName=m14186&loginSuccessURL=https:%2F%2Foidc.idp.clogin.att.com%2Fmga%2Fsps%2Foauth%2Foauth20%2Fauthorize%3Fresponse_type%3Did_token%26client_id%3Dm14186%26redirect_uri%3Dhttps%253A%252F%252Fwww.att.com%252Fmsapi%252Flogin%252Funauth%252Fservice%252Fv1%252Fhaloc%252Foidc%252Fredirect%26state%3Dfrom%253Dnx%26scope%3Dopenid%26response_mode%3Dform_post%26nonce%3D56dn6yHl",
@@ -215,7 +215,7 @@
       ]
     },
     "01/07/2026": {
-      "paycheck_amount": "0.00",
+      "paycheck_amount": "2101.25",
       "bills": [
         {
           "template_id": "8ca94529-0ae5-4968-82a4-48cc44d241b0",
@@ -230,7 +230,7 @@
         {
           "template_id": "2ebc388f-06d8-459c-ae7f-f0d5ea5e27d6",
           "name": "Lakeview Mortgage 1 of 2",
-          "amount": "861.34",
+          "amount": "854.36",
           "included": true,
           "notes": "First half of mortgage payment",
           "url": "",
@@ -240,7 +240,7 @@
         {
           "template_id": "c5580758-4db3-4ce1-8e9e-fb9f957d1993",
           "name": "Progressive",
-          "amount": "260.00",
+          "amount": "0.00",
           "included": true,
           "notes": "Put this into the savings account",
           "url": "",
@@ -250,7 +250,7 @@
         {
           "template_id": "fe7fe416-706c-48d1-a7e0-411920043404",
           "name": "Duke Energy",
-          "amount": "0.00",
+          "amount": "175.46",
           "included": true,
           "notes": "",
           "url": "https://login.duke-energy.com/u/login/identifier?state=hKFo2SB6eUVzRzBtNDVGM2dUS01SSzhPRTR2c3NyOHFGZjM4b6Fur3VuaXZlcnNhbC1sb2dpbqN0aWTZIGt1RVhLNVE0amVNb1dpcXJqZXdoemZTMzRNSVBmNWt2o2NpZNkgS1c3ZTdhRnlpamM5U01TVnluZGFpNW9ucm1KQlBjMEI",
@@ -260,7 +260,7 @@
         {
           "template_id": "3d9d1221-f4db-4d0f-8484-f0104dbb9f5d",
           "name": "Car Payment 1 of 2",
-          "amount": "343.08",
+          "amount": "343.10",
           "included": true,
           "notes": "First half of the car payment",
           "url": "",
@@ -270,7 +270,7 @@
         {
           "template_id": "514be3db-7aad-4355-987d-67ede699040d",
           "name": "GoodLeap",
-          "amount": "145.65",
+          "amount": "134.00",
           "included": true,
           "notes": "Christopher adds 278.00 to this payment, while he is still here",
           "url": "https://www.billerpayments.com/app/cust/login.do?bsn=goodleapmain",
