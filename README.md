@@ -48,6 +48,8 @@ A desktop payday bill tracker built with Python + CustomTkinter.
 
 \- Quick payday jump buttons (two previous, current, and two next paydays) to avoid manual date typing.
 
+\- App window remembers size/position between runs.
+
 \- Local JSON persistence.
 
 
