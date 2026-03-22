@@ -770,20 +770,8 @@ class PaydayBillApp:
                 cell = tk.Label(inner, text=text_value, bg=bg, width=10)
                 cell.grid(row=row_i, column=col_i, sticky="nsew")
 
-        legend_row = len(templates) + 1
-        tk.Label(inner, text="Legend", anchor="w", width=30, bg="#D9E1F2").grid(row=legend_row, column=0, sticky="nsew")
-        legend_items = [
-            ("Cycle 1 due", red_bg),
-            ("Cycle 2 due", yellow_bg),
-            ("Free check", green_bg),
-            ("Not due", neutral_bg),
-        ]
-        for idx, (text, color) in enumerate(legend_items, start=1):
-            lbl = tk.Label(inner, text=text, bg=color, width=10)
-            lbl.grid(row=legend_row, column=idx, sticky="nsew")
-
-        total_bills_row = legend_row + 1
-        money_left_row = legend_row + 2
+        total_bills_row = len(templates) + 1
+        money_left_row = len(templates) + 2
 
         tk.Label(inner, text="Total Bills", anchor="w", width=30, bg="#F2F2F2").grid(row=total_bills_row, column=0, sticky="nsew")
         tk.Label(inner, text="Money Left", anchor="w", width=30, bg="#F2F2F2").grid(row=money_left_row, column=0, sticky="nsew")
@@ -816,7 +804,22 @@ class PaydayBillApp:
                 row=money_left_row, column=col_i, sticky="nsew"
             )
 
-        for r in range(money_left_row + 1):
+        spacer_row = money_left_row + 1
+        legend_row = money_left_row + 2
+        tk.Label(inner, text="", bg="#ffffff").grid(row=spacer_row, column=0, columnspan=len(paydays) + 1, sticky="nsew")
+
+        tk.Label(inner, text="Legend", anchor="w", width=30, bg="#D9E1F2").grid(row=legend_row, column=0, sticky="nsew")
+        legend_items = [
+            ("Cycle 1 due", red_bg),
+            ("Cycle 2 due", yellow_bg),
+            ("Free check", green_bg),
+            ("Not due", neutral_bg),
+        ]
+        for idx, (text, color) in enumerate(legend_items, start=1):
+            lbl = tk.Label(inner, text=text, bg=color, width=10)
+            lbl.grid(row=legend_row, column=idx, sticky="nsew")
+
+        for r in range(legend_row + 1):
             inner.grid_rowconfigure(r, minsize=row_h)
         inner.grid_columnconfigure(0, minsize=name_col_w)
         for c in range(1, len(paydays) + 1):
