@@ -266,19 +266,26 @@ class PaydayBillApp:
             row=0, column=2, padx=8, pady=8, sticky="e"
         )
 
-        # Template management
+        # Right-side tabs
         self.right_frame = ctk.CTkFrame(self.root)
         self.right_frame.grid(row=1, column=1, sticky="nsew", padx=(7, 14), pady=(0, 8))
         self.right_frame.grid_columnconfigure(0, weight=1)
+        self.right_tabs = ctk.CTkTabview(self.right_frame)
+        self.right_tabs.grid(row=0, column=0, sticky="nsew", padx=8, pady=8)
+        self.right_tabs.add("Paydays")
+        self.right_tabs.add("Bills")
 
-        ctk.CTkLabel(self.right_frame, text="Bill Templates", font=ctk.CTkFont(size=18, weight="bold")).grid(
+        bills_tab = self.right_tabs.tab("Bills")
+        bills_tab.grid_columnconfigure(0, weight=1)
+
+        ctk.CTkLabel(bills_tab, text="Bills", font=ctk.CTkFont(size=18, weight="bold")).grid(
             row=0, column=0, sticky="w", padx=10, pady=(10, 6)
         )
 
-        self.template_menu = ctk.CTkOptionMenu(self.right_frame, values=["(none)"], command=self._on_template_select)
+        self.template_menu = ctk.CTkOptionMenu(bills_tab, values=["(none)"], command=self._on_template_select)
         self.template_menu.grid(row=1, column=0, sticky="ew", padx=10, pady=6)
 
-        form = ctk.CTkFrame(self.right_frame)
+        form = ctk.CTkFrame(bills_tab)
         form.grid(row=2, column=0, sticky="ew", padx=10, pady=6)
         form.grid_columnconfigure(1, weight=1)
 
@@ -300,7 +307,7 @@ class PaydayBillApp:
         ctk.CTkEntry(form, textvariable=self.tpl_notes_var).grid(row=3, column=1, sticky="ew", padx=8, pady=6)
         ctk.CTkEntry(form, textvariable=self.tpl_url_var).grid(row=4, column=1, sticky="ew", padx=8, pady=6)
 
-        button_row = ctk.CTkFrame(self.right_frame)
+        button_row = ctk.CTkFrame(bills_tab)
         button_row.grid(row=3, column=0, sticky="ew", padx=10, pady=8)
         button_row.grid_columnconfigure((0, 1, 2), weight=1)
 
@@ -310,8 +317,10 @@ class PaydayBillApp:
             row=0, column=2, padx=4, pady=4, sticky="ew"
         )
 
-        self.quick_nav_frame = ctk.CTkFrame(self.right_frame)
-        self.quick_nav_frame.grid(row=4, column=0, sticky="ew", padx=10, pady=(8, 10))
+        paydays_tab = self.right_tabs.tab("Paydays")
+        paydays_tab.grid_columnconfigure(0, weight=1)
+        self.quick_nav_frame = ctk.CTkFrame(paydays_tab)
+        self.quick_nav_frame.grid(row=0, column=0, sticky="ew", padx=10, pady=(8, 10))
         self.quick_nav_frame.grid_columnconfigure((0, 1, 2, 3, 4), weight=1)
         ctk.CTkLabel(
             self.quick_nav_frame,
@@ -823,7 +832,7 @@ class PaydayBillApp:
         header = ctk.CTkFrame(self.bill_scroll)
         header.grid(row=0, column=0, sticky="ew", pady=(0, 8), padx=4)
         header.grid_columnconfigure(2, weight=1)
-        for c, text in enumerate(["In", "Amount", "Bill", "Notes", "Link"]):
+        for c, text in enumerate(["In", "Amount", "Bill", "URL"]):
             ctk.CTkLabel(header, text=text, font=ctk.CTkFont(weight="bold")).grid(row=0, column=c, padx=6, pady=4)
 
         for i, bill in enumerate(session.get("bills", []), start=1):
@@ -847,15 +856,27 @@ class PaydayBillApp:
             if pushed_from:
                 name = f"{name} ({pushed_from})"
 
-            ctk.CTkLabel(frame, text=name, anchor="w").grid(row=0, column=2, padx=6, pady=6, sticky="w")
+            text_frame = ctk.CTkFrame(frame, fg_color="transparent")
+            text_frame.grid(row=0, column=2, padx=6, pady=4, sticky="w")
+            ctk.CTkLabel(text_frame, text=name, anchor="w").grid(row=0, column=0, sticky="w")
+            notes_text = (bill.get("notes") or "").strip()
+            if notes_text:
+                ctk.CTkLabel(
+                    text_frame,
+                    text=notes_text,
+                    anchor="w",
+                    text_color="#5b5b5b",
+                    font=ctk.CTkFont(size=12),
+                    wraplength=300,
+                ).grid(row=1, column=0, sticky="w")
 
-            ctk.CTkButton(frame, text="Notes", width=70, command=lambda b=bill: self._show_notes(b)).grid(
-                row=0, column=3, padx=6, pady=6
-            )
-
-            ctk.CTkButton(frame, text="Open", width=70, command=lambda b=bill: self._open_link(b)).grid(
-                row=0, column=4, padx=6, pady=6
-            )
+            url = (bill.get("url") or "").strip()
+            if url:
+                ctk.CTkButton(frame, text="Open", width=70, command=lambda b=bill: self._open_link(b)).grid(
+                    row=0, column=3, padx=6, pady=6
+                )
+            else:
+                ctk.CTkLabel(frame, text="—", width=70).grid(row=0, column=3, padx=6, pady=6)
 
             self.bill_row_widgets.append(BillRowWidgets(frame=frame, include_var=include_var, amount_var=amount_var))
 
@@ -916,10 +937,6 @@ class PaydayBillApp:
         self._save_data()
 
     # -------------------- Bill actions --------------------
-    def _show_notes(self, bill: dict) -> None:
-        notes = bill.get("notes") or "No notes."
-        messagebox.showinfo(f"Notes: {bill.get('name', 'Bill')}", notes)
-
     def _open_link(self, bill: dict) -> None:
         url = (bill.get("url") or "").strip()
         if not url:

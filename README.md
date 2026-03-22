@@ -1,64 +1,72 @@
-﻿# \# Payday Bill App
+﻿\# Payday Bill App
 
-# 
 
-# A desktop payday bill tracker built with Python + CustomTkinter.
 
-# 
+A desktop payday bill tracker built with Python + CustomTkinter.
 
-# \## Features
 
-# 
 
-# \- Payday date and paycheck amount tracking.
+\## Features
 
-# \- Alternating biweekly cycle (Paycheck Cycle 1 / 2).
 
-# \- Bill templates with default amounts, notes, and optional links.
 
-# \- Per-payday bill list with include checkboxes and editable amounts.
+\- Payday date and paycheck amount tracking.
 
-# \- Remaining balance summary.
+\- Alternating biweekly cycle (Paycheck Cycle 1 / 2).
 
-# \- Per-bill \*\*Push Forward\*\* behavior with two options:
+\- Bill templates with default amounts, notes, and optional links.
 
-# &#x20; - Cascade next payday bills forward.
+\- Per-payday bill list with include checkboxes and editable amounts.
 
-# &#x20; - Add only the selected bill to next payday.
+\- Bill notes are shown inline under each bill name (no popup click needed).
 
-# \- \*\*Free Check Review\*\* flow that:
+\- URL button only appears for bills that have a payment URL.
 
-# &#x20; - walks all bills,
+\- Bill setup/editing lives on a dedicated \*\*Bills\*\* tab.
 
-# &#x20; - asks whether each bill can wait,
+\- Remaining balance summary.
 
-# &#x20; - adds selected bills to the free-check payday,
+\- \*\*Free Check Review\*\* flow that:
 
-# &#x20; - flips future cycle parity for subsequent paydays.
+&#x20; - walks all bills,
 
-# \- Next free-check indicator (defaults to payday #13 and #24 each year).
+&#x20; - asks whether each bill can wait,
 
-# \- Read-only \*\*Spreadsheet Simulation View\*\* to visualize upcoming payday columns with cycle colors and free-check highlights.
+&#x20; - adds selected bills to the free-check payday,
 
-# \- Local JSON persistence.
+&#x20; - flips future cycle parity for subsequent paydays.
 
-# 
+\- Next free-check indicator (defaults to payday #13 and #24 each year).
 
-# \## Run (global Python install)
+\- Read-only \*\*Spreadsheet Simulation View\*\* to visualize upcoming payday columns with cycle colors and free-check highlights.
 
-# 
+\- Spreadsheet view always starts at the first payday of the selected year and shows the full year.
 
-# ```bash
+\- Due cells in spreadsheet view show bill amounts (color + amount).
 
-# pip install -r requirements.txt
+\- Spreadsheet view includes per-payday \*\*Total Bills\*\* and \*\*Money Left\*\* rows.
 
-# python app.py
+\- Quick payday jump buttons (two previous, current, and two next paydays) to avoid manual date typing.
 
-# ```
+\- Local JSON persistence.
 
-# 
 
-# App data is stored in `payday\_data.json` next to `app.py`.
 
-# 
+\## Run (global Python install)
+
+
+
+```bash
+
+pip install -r requirements.txt
+
+python app.py
+
+```
+
+
+
+App data is stored in `payday\_data.json` next to `app.py`.
+
+
 
