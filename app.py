@@ -33,9 +33,10 @@ class PaydayBillApp:
 
         self.root = ctk.CTk()
         self.root.title("Payday Bill App")
-        self.root.geometry("1260x780")
 
         self.data = self._load_data()
+        self.root.geometry(self.data.get("window_geometry", "1260x780"))
+        self.root.protocol("WM_DELETE_WINDOW", self._on_close)
         self.bill_row_widgets: list[BillRowWidgets] = []
         self.selected_template_id: str | None = None
         self.quick_payday_buttons: list[ctk.CTkButton] = []
@@ -52,6 +53,7 @@ class PaydayBillApp:
             "sessions": {},
             "free_check_numbers": DEFAULT_FREE_CHECK_NUMBERS,
             "free_check_flips": [],
+            "window_geometry": "1260x780",
         }
 
     def _load_data(self) -> dict:
@@ -945,6 +947,11 @@ class PaydayBillApp:
         webbrowser.open(url)
 
     # -------------------- App lifecycle --------------------
+    def _on_close(self) -> None:
+        self.data["window_geometry"] = self.root.geometry()
+        self._save_data()
+        self.root.destroy()
+
     def run(self) -> None:
         self.root.mainloop()
 
